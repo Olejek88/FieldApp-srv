@@ -1,0 +1,304 @@
+html,
+body {
+    height: 100%;
+}
+
+.wrap {
+    margin: 0 auto -60px;
+    min-height: 100%;
+    padding: 0 0 60px;
+    height: auto;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    border-top: 1px solid #ddd;
+    background-color: #f5f5f5;
+    padding-top: 20px;
+    height: 60px;
+}
+
+.jumbotron {
+    background-color: transparent;
+    text-align: center;
+}
+
+.jumbotron .btn {
+    padding: 14px 24px;
+    font-size: 21px;
+}
+
+.not-set {
+    font-style: italic;
+    color: #c55;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    font-family: 'Glyphicons Halflings';
+    display: inline-block;
+    font-weight: normal;
+    position: relative;
+    font-style: normal;
+    padding-left: 5px;
+    line-height: 1;
+    top: 1px;
+}
+
+a.asc:after {
+    content: "\e151";
+}
+
+a.desc:after {
+    content: "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view td {
+    white-space: nowrap;
+}
+
+.grid-view .filters input,
+.grid-view .filters select {
+    min-width: 50px;
+}
+
+.hint-block {
+    margin-top: 5px;
+    display: block;
+    color: #999;
+}
+
+.error-summary {
+    border-left: 3px solid #eed3d7;
+    background: #fdf7f7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+    color: #a94442;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding: 15px;
+    border: none;
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        padding: 10px 15px;
+        text-align: left;
+        display:block;
+        width: 100%;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+
+
+.first-block-header {
+    border-bottom: 15px solid #333;
+    font-size: 1.2em;
+    padding: 10px;
+    height: 400px;
+    color: #fff;
+}
+
+.first-block-header a,
+.first-block-header a:hover,
+.first-block-header a:visited {
+    color: #333;
+}
+
+.box-block {
+    padding: 0 10px 0 10px;
+}
+
+.box-block-header {
+    padding: 4px 2px 2px 2px;
+    height: 115px;
+}
+
+.box-block-header  i {
+    padding-top: 30px;
+    font-size: 30px;
+}
+
+.box-block-header a,
+.box-block-header a:hover,
+.box-block-header a:visited {
+    text-decoration: none;
+    color: #333;
+}
+
+.layout-block-header {
+    background: #eee;
+    height: 110px;
+    width: 100%;
+}
+
+.layout-block-header:hover {
+    background: #ccc55e;
+}
+
+.holst {
+    /*border: 1px solid #333;*/
+    margin: 0 auto;
+    padding: 10px;
+    height: 350px;
+    width: 270px;
+}
+
+.triangle-block-header-1 {
+    border-color: transparent transparent #333 transparent;
+    border-width: 0 100px 150px 100px;
+    border-style: solid;
+    position: relative;
+    left: 10px;
+    top: 10px;
+    height: 0;
+    width: 0;
+}
+
+.triangle-block-header-2 {
+    border-color: #333 transparent transparent transparent;
+    border-width: 90px 50px 0 50px;
+    border-style: solid;
+    position: relative;
+    left: -20px;
+    top: 13px;
+    height: 0;
+    width: 0;
+}
+
+.triangle-block-header-3 {
+    border-color: #333 transparent transparent transparent;
+    border-width: 150px 100px 0 100px;
+    border-style: solid;
+    position: relative;
+    left: 85px;
+    top: -75px;
+    height: 0;
+    width: 0;
+}
+
+.triangle-block-header-4 {
+    border-color: #333 transparent transparent transparent;
+    border-width: 70px 45px 0 45px;
+    border-style: solid;
+    position: relative;
+    top: -320px;
+    height: 0;
+    width: 0;
+    left: -25px;
+}
+
+.triangle-block-header-5 {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 22.5px 45px 22.5px;
+    border-color: transparent transparent #333 transparent;
+    position: relative;
+    top: -438px;
+    left: 20px;
+}
+
+.triangle-block-header-6 {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 70px 45px 0 45px;
+    border-color: #333 transparent transparent transparent;
+    position: relative;
+    top: -438px;
+    left: 170px;
+}
+
+
+.triangle-block-header-1:hover, .triangle-block-header-2:hover,
+.triangle-block-header-3:hover, .triangle-block-header-4:hover,
+.triangle-block-header-5:hover, .triangle-block-header-6:hover {
+    border-color: #666 transparent transparent transparent;
+    border-style: solid;
+    position: relative;
+    height: 0;
+    width: 0;
+}
+
+.triangle-block-header-1:hover {
+    border-color: transparent transparent #666 transparent;
+    border-width: 0 100px 150px 100px;
+    left: 10px;
+    top: 10px;
+}
+
+.triangle-block-header-2:hover {
+    border-width: 90px 50px 0 50px;
+    left: -20px;
+    top: 13px;
+}
+
+.triangle-block-header-3:hover {
+    border-width: 150px 100px 0 100px;
+    top: -75px;
+    left: 85px;
+}
+
+.triangle-block-header-4:hover {
+    border-width: 70px 45px 0 45px;
+    top: -320px;
+    left: -25px;
+}
+
+.triangle-block-header-5:hover {
+    border-color: transparent transparent #666 transparent;
+    border-width: 0 22.5px 45px 22.5px;
+    top: -438px;
+    left: 20px;
+}
+
+.triangle-block-header-6:hover {
+    border-width: 70px 45px 0 45px;
+    top: -438px;
+    left: 170px;
+}
+
+.two-block-header {
+    position: relative;
+    background: #fff;
+    z-index: 1000;
+}
+
+.box-block-info, .box-block-news {
+    padding: 5px 20px 5px 30px;
+}
+
+.block-footer {
+    background: #333;
+    height: 200px
+}
