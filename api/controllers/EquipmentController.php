@@ -6,7 +6,7 @@ use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
-use common\models\Equipment;
+use common\models\Channel;
 
 /**
  */
@@ -58,7 +58,7 @@ class EquipmentController extends ActiveController
     /**
      * Index
      *
-     * @return Equipment[]|Equipment
+     * @return Channel[]|Channel
      */
     public function actionIndex()
     {
@@ -66,7 +66,7 @@ class EquipmentController extends ActiveController
 
         // проверяем параметры запроса
         $req = \Yii::$app->request;
-        $query = Equipment::find()->where(['deleted' => 0]);
+        $query = Channel::find()->where(['deleted' => 0]);
 
         $id = $req->getQueryParam('id');
         if ($id != null) {
@@ -112,7 +112,7 @@ class EquipmentController extends ActiveController
 
         // проверяем параметры запроса
         $req = \Yii::$app->request;
-        $query = Equipment::find()->where(['deleted' => 0]);
+        $query = Channel::find()->where(['deleted' => 0]);
 
         // uuid оборудования
         $uuid = $req->getQueryParam('uuid');
@@ -135,7 +135,7 @@ class EquipmentController extends ActiveController
         }
 
         // проверяем на наличие такой метки в базе
-        $testEquipment = Equipment::find()->where(['tagId' => $tagId])->one();
+        $testEquipment = Channel::find()->where(['tagId' => $tagId])->one();
         if ($testEquipment != null) {
             return false;
         }

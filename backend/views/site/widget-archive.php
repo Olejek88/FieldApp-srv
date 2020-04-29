@@ -1,21 +1,26 @@
 <?php
 
-use common\models\Measure;
-use common\models\MeasureType;
 use kartik\grid\GridView;
-use yii\data\ActiveDataProvider;
 
-/* @var $node
+/* @var $provider
  */
 ?>
 
 <div class="box box-primary">
-    <!-- /.box-header -->
     <div class="box-body">
         <?php
         $gridColumns = [
             [
                 'attribute' => 'date',
+                'contentOptions' => [
+                    'class' => 'table_class'
+                ],
+                'headerOptions' => ['class' => 'text-center'],
+            ],
+            [
+                'attribute' => 'channel.title',
+                'hAlign' => 'center',
+                'vAlign' => 'middle',
                 'contentOptions' => [
                     'class' => 'table_class'
                 ],
@@ -29,49 +34,21 @@ use yii\data\ActiveDataProvider;
                 'contentOptions' => ['class' => 'kv-sticky-column'],
             ],
             [
-                'attribute' => 'sensorChannel.title',
+                'attribute' => 'measureType',
                 'hAlign' => 'center',
                 'vAlign' => 'middle',
-                'contentOptions' => [
-                    'class' => 'table_class'
-                ],
-                'headerOptions' => ['class' => 'text-center'],
-            ],
-            [
-                'hAlign' => 'center',
-                'header' => 'Тип измерения',
-                'vAlign' => 'middle',
-                'value' => function ($data) {
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_CURRENT)
-                        return 'Текущее значение';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_HOUSE)
-                        return 'Часовое значение';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_DAYS)
-                        return 'Дневное значение';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_MONTH)
-                        return 'Архив за месяц';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_TOTAL)
-                        return 'Накопительное значение';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_INTERVAL)
-                        return 'Интервальное значение';
-                    if ($data['type'] == MeasureType::MEASURE_TYPE_TOTAL_CURRENT)
-                        return 'Текущее накопительное';
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $color = 'background-color: gray';
+                    $status = "<span class='badge' style='" . $color . "; height: 12px; margin-top: -3px'> </span>&nbsp;" .
+                        $model->measureType->title;
+                    return $status;
                 },
                 'contentOptions' => [
                     'class' => 'table_class'
                 ],
-                'headerOptions' => ['class' => 'text-center'],
-            ]
+            ],
         ];
-
-        $measures = Measure::find()->orderBy('date DESC')->limit(8);
-        $provider = new ActiveDataProvider(
-            [
-                'query' => $measures,
-                'sort' =>false,
-            ]
-        );
-        $provider->pagination->pageSize = 8;
 
         echo GridView::widget(
             [

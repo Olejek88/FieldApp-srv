@@ -4,12 +4,11 @@ namespace common\models;
 
 use yii\behaviors\TimestampBehavior;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\redis\Connection;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
-use Throwable;
 
 /**
  * Class Users
@@ -36,7 +35,7 @@ use Throwable;
  * @property null|string $typeName
  * @property string $imageDir
  */
-class Users extends ToirusModel
+class Users extends ActiveRecord
 {
     private static $_IMAGE_ROOT = 'users';
 

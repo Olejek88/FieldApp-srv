@@ -1,7 +1,7 @@
 <?php
 
 use app\commands\MainFunctions;
-use common\models\Equipment;
+use common\models\Channel;
 use common\models\MeasureType;
 use common\models\Operation;
 use dosamigos\datetimepicker\DateTimePicker;
@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
     ?>
 
     <?php
-    $equipment = Equipment::find()->all();
+    $equipment = Channel::find()->all();
     $items = ArrayHelper::map($equipment, 'uuid', 'title');
     echo $form->field($model, 'equipmentUuid')->dropDownList($items);
 

@@ -154,8 +154,6 @@ class m170112_051612_new_migrations_1 extends Migration
     /**
      * @param $table
      * @param $title
-     * @param $createdAt
-     * @param $changedAt
      * @throws Exception
      */
     private function insertIntoType($table, $title)

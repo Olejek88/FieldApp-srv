@@ -7,13 +7,14 @@ use common\models\MeasureType;
 use Throwable;
 use Yii;
 use yii\db\StaleObjectException;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
  * MeasureTypeController implements the CRUD actions for MeasureType model.
  */
-class MeasureTypeController extends ToirusController
+class MeasureTypeController extends Controller
 {
     protected $modelClass = MeasureType::class;
 

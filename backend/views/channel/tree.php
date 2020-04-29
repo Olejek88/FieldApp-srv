@@ -4,114 +4,30 @@ use wbraganca\fancytree\FancytreeWidget;
 use yii\helpers\Html;
 use yii\web\JsExpression;
 
-$this->title = Yii::t('app', 'Дерево моделей оборудования');
+$this->title = Yii::t('app', 'Дерево каналов');
 
-/* @var array $equipment
- * @var array $users
- * @var string $sq
+/* @var array $channels
  */
 
 ?>
 <table id="tree" style="background-color: white; width: 100%; font-weight: normal">
     <colgroup>
         <col width="*">
-        <col width="*">
         <col width="140px">
         <col width="100px">
-        <col width="90px">
-        <col width="130px">
-        <col width="140px">
-        <col width="85px">
         <col width="120px">
     </colgroup>
     <thead style="color: white" class="thead_tree">
     <tr>
-        <!--        <th colspan="1">
-            <?php
-        /*            try {
-                        echo Select2::widget([
-                            'id' => 'user_select',
-                            'name' => 'user_select',
-                            'language' => Yii::t('app', 'ru'),
-                            'data' => $users,
-                            'options' => ['placeholder' => 'Выберите исполнителя...'],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ]);
-                    } catch (Exception $e) {
-
-                    }
-                    */ ?>
-        </th>
-        <th align="center" colspan="1" style="background-color: #3c8dbc; color: whitesmoke">
-            <button class="btn btn-success" type="button" id="addButton" style="padding: 5px 10px">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </button>
-            &nbsp
-            <button class="btn btn-danger" type="button" id="removeButton" style="padding: 5px 10px">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-        </th>
--->
-        <th align="center">
-            <?=
-            Html::a('<button class="btn btn-success" type="button" id="addButton" style="padding: 1px 7px"
-                    title="Добавить тип оборудования"><span class="fa fa-plus" aria-hidden="true"></span></button>',
-                ['/equipment-type/new-type'],
-                ['data-toggle' => 'modal', 'data-target' => '#modalAddEquipmentType']);
-            ?>
-            <button class="btn btn-info" type="button" id="expandButton" style="padding: 1px 5px"
-                    title="<?php echo Yii::t('app', 'Развернуть по уровням') ?>">
-                <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
-            </button>
-            <button class="btn btn-info" type="button" id="expandButton2" style="padding: 1px 5px"
-                    title="<?php echo Yii::t('app', 'Развернуть по уровням глубже') ?>">
-                <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
-            </button>
-            <button class="btn btn-info" type="button" id="collapseButton" style="padding: 1px 5px" title="
-            <?php echo Yii::t('app', 'Свернуть') ?>">
-                <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-            </button>
-        </th>
-        <td style="vertical-align: center">
-            <form action="" class="form-inline">
-                <table style="vertical-align: center">
-                    <tr>
-                        <td>
-                            <?= Html::textInput('sq', $sq, [
-                                'class' => 'form-control',
-                                'id' => 'search',
-                                'style' => 'background-color: white',
-                            ]); ?>
-                        </td>
-                        <td>
-                            <?php
-                            if (!empty($sq)) {
-                                echo '<a class="btn btn-info" href="/equipment/tree">x</a>';
-                            }
-                            ?>
-                            <button class="btn btn-info" type="submit">
-                                <?php echo Yii::t('app', 'Искать') ?></button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </td>
         <th align="center" colspan="7" class="thead_tree"
-            style="color: whitesmoke"><?php echo Yii::t('app', 'Оборудование системы') ?>
+            style="color: whitesmoke"><?php echo Yii::t('app', 'Каналы') ?>
         </th>
     </tr>
     <tr style="color: whitesmoke" class="thead_tree">
         <th align="center"><?php echo Yii::t('app', 'Оборудование') ?></th>
-        <th><?php echo Yii::t('app', 'Расположение') ?></th>
-        <th><?php echo Yii::t('app', 'Задачи') ?></th>
-        <th><?php echo Yii::t('app', 'Исполнители') ?></th>
-        <th><?php echo Yii::t('app', 'Инвентарный') ?></th>
-        <th><?php echo Yii::t('app', 'Серийный номер') ?></th>
-        <th><?php echo Yii::t('app', 'Статус') ?></th>
-        <th><?php echo Yii::t('app', 'Дата ввода') ?></th>
-        <th><?php echo Yii::t('app', 'Действия') ?></th>
+        <th><?php echo Yii::t('app', 'Тип измерения') ?></th>
+        <th><?php echo Yii::t('app', 'Значение') ?></th>
+        <th><?php echo Yii::t('app', 'Дата') ?></th>
     </tr>
     </thead>
     <tbody>
@@ -120,11 +36,6 @@ $this->title = Yii::t('app', 'Дерево моделей оборудовани
         <td class="alt"></td>
         <td class="center"></td>
         <td class="alt"></td>
-        <td class="center"></td>
-        <td class="alt"></td>
-        <td class="center"></td>
-        <td class="alt"></td>
-        <td class="center"></td>
     </tr>
     </tbody>
 </table>
@@ -147,48 +58,7 @@ try {
             'checkbox' => true,
             'keyboard' => false,
             'selectMode' => 2,
-            'extensions' => ['dnd', 'table', 'contextMenu'],
-            'dnd' => [
-                'preventVoidMoves' => true,
-                'preventRecursiveMoves' => false,
-                'preventSameParent' => false,
-                'preventRecursion' => false,
-                'autoExpandMS' => 400,
-                'dragStart' => new JsExpression('function(node, data) {
-				return true;
-			}'),
-                'dragEnter' => new JsExpression('function(node, data) {
-				return true;
-			}'),
-                'dragDrop' => new JsExpression('function(node, data) {
-				if (data.otherNode.selected) {
-				    $.ajax({
-                        url: "../equipment/equipment-copy",
-                        type: "post",
-                        data: {
-				            from: data.otherNode.data.uuid,
-				            model: node.data.model_uuid				        
-                        },
-                        success: function (code) {
-                            var message = JSON.parse(code);
-				            if (message.code == 0) {
-    				            newNode = data.otherNode.copyTo(node, data.hitMode);
-    				            console.log(newNode);
-    				            newNode.data.uuid = message.message.uuid;
-    				            newNode.data.key = message.message._id;
-    				            newNode.key = message.message._id;
-    				            newNode.setTitle(message.message.title);
-    				            newNode.data = message.message.data;
-    				            newNode.render(true);
-				            }
-				            else {				                     
-				                alert (message.message);
-				            }
-                        }
-                    });
-                }
-			}'),
-            ],
+            'extensions' => ['table', 'contextMenu'],
             'edit' => [
                 'triggerStart' => ["clickActive", "dblclick", "f2", "mac+enter", "shift+click"],
                 'save' => new JsExpression('function(event, data) {
@@ -272,48 +142,6 @@ try {
                                     }
                                 }
                            }); 
-                    }')
-                    ],
-                    'doc' => [
-                        'name' => Yii::t('app', 'Добавить документацию'),
-                        'icon' => 'add',
-                        'callback' => new JsExpression('function(key, opt) {
-                            var node = $.ui.fancytree.getNode(opt.$trigger);
-                            $.ajax({
-                                url: "../documentation/add",
-                                type: "post",
-                                data: {
-                                    selected_node: node.key,
-                                    folder: node.folder,
-                                    uuid: node.data.uuid,
-                                    model_uuid: node.data.model_uuid                                    
-                                },
-                                success: function (data) { 
-                                    $(\'#modalAddDocumentation\').modal(\'show\');
-                                    $(\'#modalContent\').html(data);
-                                }
-                            });
-                    }')
-                    ],
-                    'defect' => [
-                        'name' => Yii::t('app', 'Добавить дефект'),
-                        'icon' => 'add',
-                        'callback' => new JsExpression('function(key, opt) {
-                            var node = $.ui.fancytree.getNode(opt.$trigger);
-                            $.ajax({
-                                url: "../defect/add",
-                                type: "post",
-                                data: {
-                                    selected_node: node.key,
-                                    folder: node.folder,
-                                    uuid: node.data.uuid,
-                                    model_uuid: node.data.model_uuid                                    
-                                },
-                                success: function (data) { 
-                                    $(\'#modalAddDefect\').modal(\'show\');
-                                    $(\'#modalContentDefect\').html(data);
-                                }
-                            });
                     }')
                     ],
                     'delete' => [

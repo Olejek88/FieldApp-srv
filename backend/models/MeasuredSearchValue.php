@@ -18,7 +18,7 @@ class MeasuredSearchValue extends MeasuredValue
     {
         return [
             [['_id'], 'integer'],
-            [['uuid', 'equipmentUuid', 'operationUuid', 'date', 'value', 'createdAt', 'changedAt'], 'safe'],
+            [['uuid', 'channelUuid', 'date', 'value', 'createdAt', 'changedAt'], 'safe'],
         ];
     }
 
@@ -65,9 +65,7 @@ class MeasuredSearchValue extends MeasuredValue
         ]);
 
         $query->andFilterWhere(['like', 'uuid', $this->uuid])
-            ->andFilterWhere(['like', 'equipmentUuid', $this->equipmentUuid])
-            ->andFilterWhere(['like', 'operationUuid', $this->operationUuid])
-            ->andFilterWhere(['like', 'value', $this->value]);
+            ->andFilterWhere(['like', 'channelUuid', $this->channelUuid]);
 
         return $dataProvider;
     }

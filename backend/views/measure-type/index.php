@@ -7,9 +7,6 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Типы измерений');
 ?>
 <div class="order-status-view box-padding" style="width: 95%; min-height: 1224px">
-    <?php
-    echo $this->render('@backend/views/yii2-app/layouts/references-menu.php');
-    ?>
     <div class="panel panel-default" style="float: right; width: 75%">
         <div class="panel-heading" style="background: #fff;">
             <h3 class="text-center" style="color: #333;">

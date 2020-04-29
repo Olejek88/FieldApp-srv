@@ -22,19 +22,11 @@ if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->acti
         backend\assets\AppAsset::register($this);
     }
 
-    $style = '';
-    if (isset(Yii::$app->params['style'])) {
-        $style = Yii::$app->params['style'];
-        if ($style == 'quarzwerke') {
-            $this->registerCssFile('/css/custom/modules/list/quarzwerke.css');
-        }
-    }
-
     dmstr\web\AdminLteAsset::register($this);
     dmstr\widgets\Menu::$iconClassPrefix = '';
     ini_set('memory_limit', '-1');
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
-    require Yii::$app->basePath . '/controllers/SidebarController.php'; // заменить на метод для корректной работы тестов. было require_once
+    require Yii::$app->basePath . '/controllers/SidebarController.php';
     ?>
     <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -53,15 +45,12 @@ if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->acti
         <?= $this->render(
             'header.php',
             [
-                'directoryAsset' => $directoryAsset, 'style' => $style
+                'directoryAsset' => $directoryAsset
             ]
         ) ?>
 
         <?php
-        if (Yii::$app->user->can(User::PERMISSION_ADMIN))
             echo $this->render('left.php', ['directoryAsset' => $directoryAsset]);
-        else
-            echo $this->render('left-operator.php', ['directoryAsset' => $directoryAsset]);
         ?>
         <?= $this->render(
             'content.php',

@@ -4,25 +4,23 @@ namespace common\models;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "measured_value".
  *
  * @property integer $_id
  * @property string $uuid
- * @property string $equipmentUuid
- * @property string $operationUuid
+ * @property string $channelUuid
  * @property string $date
  * @property string $value
  * @property string $createdAt
  * @property string $changedAt
- * @property string $measureTypeUuid
  *
- * @property MeasureType $measureType
- * @property Operation $operation
- * @property Equipment $equipment
+ * @property Channel $channel
  */
-class MeasuredValue extends ToirusModel
+
+class MeasuredValue extends ActiveRecord
 {
     /**
      * Название таблицы.
@@ -49,9 +47,7 @@ class MeasuredValue extends ToirusModel
             [
                 [
                     'uuid',
-                    'equipmentUuid',
-                    'operationUuid',
-                    'measureTypeUuid',
+                    'channelUuid',
                     'value'
                 ],
                 'required'
@@ -60,27 +56,12 @@ class MeasuredValue extends ToirusModel
             [
                 [
                     'uuid',
-                    'equipmentUuid',
-                    'operationUuid',
-                    'measureTypeUuid',
+                    'channelUuid',
                     'value'
                 ],
                 'string',
                 'max' => 45
-            ],
-            [
-                [
-                    'uuid',
-                    'equipmentUuid',
-                    'operationUuid',
-                    'measureTypeUuid',
-                    'value',
-                    'date',
-                ],
-                'filter', 'filter' => function ($param) {
-                return htmlspecialchars($param, ENT_QUOTES | ENT_HTML401);
-                }
-            ],
+            ]
         ];
     }
 
@@ -96,9 +77,8 @@ class MeasuredValue extends ToirusModel
         return [
             '_id' => Yii::t('app', '№'),
             'uuid' => Yii::t('app', 'Uuid'),
-            'equipmentUuid' => Yii::t('app', 'Оборудование'),
-            'operationUuid' => Yii::t('app', 'Операция'),
-            'measureTypeUuid' => Yii::t('app', 'Тип измерения'),
+            'channelUuid' => Yii::t('app', 'Канал'),
+            'channel' => Yii::t('app', 'Канал'),
             'date' => Yii::t('app', 'Дата'),
             'value' => Yii::t('app', 'Значение'),
             'createdAt' => Yii::t('app', 'Создан'),
@@ -114,14 +94,8 @@ class MeasuredValue extends ToirusModel
     public function fields()
     {
         return ['_id', 'uuid',
-            'equipment' => function ($model) {
-                return $model->equipment;
-            },
-            'operation' => function ($model) {
-                return $model->operation;
-            },
-            'measureType' => function ($model) {
-                return $model->measureType;
+            'channel' => function ($model) {
+                return $model->channel;
             }, 'date', 'value', 'createdAt', 'changedAt'
         ];
     }
@@ -131,30 +105,8 @@ class MeasuredValue extends ToirusModel
      *
      * @return ActiveQuery
      */
-    public function getEquipment()
+    public function getChannel()
     {
-        return $this->hasOne(Equipment::class, ['uuid' => 'equipmentUuid']);
-    }
-
-    /**
-     * Объект связанного поля.
-     *
-     * @return ActiveQuery
-     */
-    public function getOperation()
-    {
-        return $this->hasOne(Operation::class, ['uuid' => 'operationUuid']);
-    }
-
-    /**
-     * Объект связанного поля.
-     *
-     * @return ActiveQuery
-     */
-    public function getMeasureType()
-    {
-        return $this->hasOne(
-            MeasureType::class, ['uuid' => 'measureTypeUuid']
-        );
+        return $this->hasOne(Channel::class, ['uuid' => 'channelUuid']);
     }
 }

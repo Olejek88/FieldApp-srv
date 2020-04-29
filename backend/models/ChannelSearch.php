@@ -2,14 +2,14 @@
 
 namespace backend\models;
 
-use common\models\Instruction;
+use common\models\Channel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * InstructionSearch represents the model behind the search form about `common\models\Instruction`.
+ * InstructionSearch represents the model behind the search form about `common\models\Channel`.
  */
-class InstructionSearch extends Instruction
+class ChannelSearch extends Channel
 {
     /**
      * @inheritdoc
@@ -18,7 +18,7 @@ class InstructionSearch extends Instruction
     {
         return [
             [['_id'], 'integer'],
-            [['uuid', 'userUuid', 'title', 'createdAt', 'changedAt', 'path', 'deleted', 'size'], 'safe'],
+            [['uuid', 'measureTypeUuid', 'title', 'createdAt', 'changedAt'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class InstructionSearch extends Instruction
      */
     public function search($params)
     {
-        $query = Instruction::find();
+        $query = Channel::find();
 
         // add conditions that should always apply here
 
@@ -59,15 +59,12 @@ class InstructionSearch extends Instruction
         // grid filtering conditions
         $query->andFilterWhere([
             '_id' => $this->_id,
-            'deleted' => 0,
-            'userUuid' => $this->userUuid,
+            'measureTypeUuid' => $this->measureTypeUuid,
             'createdAt' => $this->createdAt
         ]);
 
         $query->andFilterWhere(['like', 'uuid', $this->uuid])
-            ->andFilterWhere(['like', 'userUuid', $this->userUuid])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'path', $this->path]);
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

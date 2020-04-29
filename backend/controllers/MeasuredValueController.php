@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use backend\models\MeasuredSearchValue;
 use common\models\Defect;
-use common\models\Equipment;
+use common\models\Channel;
 use common\models\EquipmentModel;
 use common\models\EquipmentType;
 use common\models\MeasuredValue;
@@ -183,7 +183,7 @@ class MeasuredValueController extends ToirusController
 
             foreach ($equipmentModels as $equipmentModel) {
                 $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["title"] = $equipmentModel['title'];
-                $equipments = Equipment::find()
+                $equipments = Channel::find()
                     ->select('*')
                     ->where(['equipmentModelUuid' => $equipmentModel['uuid']])
                     ->all();
