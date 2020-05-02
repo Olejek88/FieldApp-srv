@@ -1,16 +1,7 @@
 <?php
-/**
- * PHP Version 7.0
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
-
 namespace api\controllers;
 
+use common\models\Users;
 use Yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -18,15 +9,6 @@ use yii\web\UnauthorizedHttpException;
 use yii\web\NotFoundHttpException;
 use backend\controllers\UsersController;
 
-/**
- * AccountController class
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
 class AccountController extends ActiveController
 {
 
@@ -73,7 +55,7 @@ class AccountController extends ActiveController
     /**
      * Me
      *
-     * @return \common\models\Users
+     * @return Users
      * @throws NotFoundHttpException
      */
     public function actionMe()

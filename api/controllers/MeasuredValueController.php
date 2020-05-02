@@ -1,13 +1,4 @@
 <?php
-/**
- * PHP Version 7.0
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
 
 namespace api\controllers;
 
@@ -19,15 +10,6 @@ use yii\web\NotAcceptableHttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 
-/**
- * Class DocumentationController
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
 class MeasuredValueController extends Controller
 {
     public $modelClass = 'common\models\MeasuredValue';
@@ -96,7 +78,7 @@ class MeasuredValueController extends Controller
     /**
      * Метод для загрузки/сохранения измеренных значений при выполнении операций.
      *
-     * @return string
+     * @return array
      * @throws NotAcceptableHttpException
      */
     public function actionUploadMeasuredValue()
@@ -144,7 +126,6 @@ class MeasuredValueController extends Controller
                     $success = false;
                 }
             }
-
             return ['success' => $success, 'data' => $saved];
         } else {
             throw new NotAcceptableHttpException();

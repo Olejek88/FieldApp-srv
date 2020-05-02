@@ -7,15 +7,6 @@ use yii\base\Controller;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 
-/**
- * Class MeasureTypeController
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
 class MeasureTypeController extends Controller
 {
     public $modelClass = 'common\models\MeasureType';
