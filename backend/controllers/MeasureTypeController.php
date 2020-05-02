@@ -3,13 +3,14 @@
 namespace backend\controllers;
 
 use backend\models\MeasureSearchType;
+use common\components\MainFunctions;
 use common\models\MeasureType;
 use Throwable;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
+use yii\web\Response;
 
 /**
  * MeasureTypeController implements the CRUD actions for MeasureType model.
@@ -24,9 +25,19 @@ class MeasureTypeController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel  = new MeasureSearchType();
+        $searchModel = new MeasureSearchType();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize = 20;
+        if (isset($_POST['editableAttribute'])) {
+            $model = MeasureType::find()
+                ->where(['_id' => $_POST['editableKey']])
+                ->one();
+            if ($_POST['editableAttribute'] == 'title') {
+                $model['title'] = $_POST['MeasureType'][$_POST['editableIndex']]['title'];
+            }
+            $model->save();
+            return json_encode('');
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -55,48 +66,23 @@ class MeasureTypeController extends Controller
     public function actionCreate()
     {
         $model = new MeasureType();
-        $searchModel  = new MeasureSearchType();
+        $searchModel = new MeasureSearchType();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize = 10;
         $dataProvider->setSort(['defaultOrder' => ['_id' => SORT_DESC]]);
 
         if ($model->load(Yii::$app->request->post())) {
-            $file = UploadedFile::getInstance($model, 'icon');
-            if ($file && $file->tempName) {
-                $model->icon = $file;
-
-                if ($model->upload()) {
-                    $uuidFile = $model->uuid;
-                    $dbName = Yii::$app->session->get('user.dbname');
-                    $imageFile = 'storage/' . $dbName . '/' . $uuidFile . '/';
-                    $fileName = $model->uuid . '.' . $model->icon->extension;
-
-                    if (!is_dir($imageFile)) {
-                        mkdir($imageFile, 0755, true);
-                    }
-
-                    $dir = Yii::getAlias($imageFile);
-                    $model->icon->saveAs($dir . $fileName);
-                    $model->icon = $fileName;
-
-                    if ($model->save(false)) {
-                        return $this->redirect('index');
-                    }
-                } else {
-                    return $model->icon;
-                }
+            if ($model->save(false)) {
+                return $this->render('index', [
+                    'model' => $model,
+                    'dataProvider' => $dataProvider
+                ]);
             }
         }
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'dataProvider' => $dataProvider
-            ]);
-        }
+        return $this->render('index', [
+            'model' => $model,
+            'dataProvider' => $dataProvider
+        ]);
     }
 
     /**
@@ -106,50 +92,16 @@ class MeasureTypeController extends Controller
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public
+    function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $baseImage = $model->icon;
-
         if ($model->load(Yii::$app->request->post())) {
-            $file = UploadedFile::getInstance($model, 'icon');
-            if ($file && $file->tempName) {
-                $model->icon = $file;
-                if ($model->upload()) {
-                    $uuidFile = $model->uuid;
-                    $dbName = Yii::$app->session->get('user.dbname');
-                    $imageFile = 'storage/' . $dbName . '/' . $uuidFile . '/';
-                    $fileName = $model->uuid . '.' . $model->icon->extension;
-
-                    if (!is_dir($imageFile)) {
-                        mkdir($imageFile, 0755, true);
-                    }
-
-                    $dir = Yii::getAlias($imageFile);
-                    $model->icon->saveAs($dir . $fileName);
-                    $model->icon = $fileName;
-
-                    if ($model->save(false)) {
-                        return $this->redirect('index');
-                    }
-                } else {
-                    return $model->icon;
-                }
-            } else {
-                $model->icon = $baseImage;
-                if ($model->save(false)) {
-                    return $this->redirect('index');
-                }
+            if ($model->save(false)) {
+                return $this->redirect('index');
             }
         }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        return $this->redirect('index');
     }
 
     /**
@@ -162,10 +114,11 @@ class MeasureTypeController extends Controller
      * @throws Throwable
      * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public
+    function actionDelete($id)
     {
         $model = $this->findModel($id);
-        if ($model && parent::checkDelete($model->uuid))
+        if ($model)
             $model->delete();
         return $this->redirect(['index']);
     }
@@ -177,7 +130,8 @@ class MeasureTypeController extends Controller
      * @return MeasureType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected
+    function findModel($id)
     {
         if (($model = MeasureType::findOne($id)) !== null) {
             return $model;
@@ -185,4 +139,35 @@ class MeasureTypeController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'Запрашиваемая страница не существует.'));
         }
     }
+
+    /**
+     * @return int|string
+     * @throws \Exception
+     */
+    public
+    function actionNew()
+    {
+        $measureType = new MeasureType();
+        $measureType->uuid = MainFunctions::GUID();
+        return $this->renderAjax('../measure-type/_add_form', [
+            'type' => $measureType
+        ]);
+    }
+
+    /**
+     * @return bool|string|Response
+     */
+    public
+    function actionSave()
+    {
+        $model = new MeasureType();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save(false)) {
+                return $this->redirect(['/measure-type']);
+            } else
+                return json_encode($model->errors);
+        }
+        return $this->render('_add_form', ['model' => $model]);
+    }
+
 }

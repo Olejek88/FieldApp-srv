@@ -1,14 +1,4 @@
 <?php
-/**
- * PHP Version 7.0
- *
- * @category Category
- * @package  Api\controllers
- * @author   Дмитрий Логачев <demonwork@yandex.ru>
- * @license  http://www.yiiframework.com/license/ License name
- * @link     http://www.toirus.ru
- */
-
 namespace api\controllers;
 
 use common\models\MeasureType;
@@ -18,7 +8,7 @@ use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 
 /**
- * Class DocumentationController
+ * Class MeasureTypeController
  *
  * @category Category
  * @package  Api\controllers

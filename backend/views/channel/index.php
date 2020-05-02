@@ -1,12 +1,7 @@
 <?php
 /* @var $searchModel backend\models\ChannelSearch */
 
-use common\models\Documentation;
-use common\models\EquipmentModel;
-use common\models\EquipmentStatus;
 use common\models\MeasureType;
-use common\models\Objects;
-use common\models\UserEquipment;
 use kartik\editable\Editable;
 use kartik\grid\GridView;
 use kartik\popover\PopoverX;
@@ -65,6 +60,7 @@ $gridColumns = [
             $types = ArrayHelper::map(MeasureType::find()->orderBy('title')->all(), 'uuid', 'title');
             return [
                 'header' => Yii::t('app', 'Тип измерения'),
+                'placement' => PopoverX::ALIGN_LEFT,
                 'size' => 'lg',
                 'inputType' => Editable::INPUT_DROPDOWN_LIST,
                 'displayValueConfig' => $types,
@@ -88,7 +84,7 @@ echo GridView::widget([
     'toolbar' => [
         ['content' =>
             Html::a(Yii::t('app', 'Новый'),
-                ['/channel/new', 'reference' => 'table'],
+                ['/channel/new'],
                 [
                     'class' => 'btn btn-success',
                     'title' => Yii::t('app', 'Новое'),

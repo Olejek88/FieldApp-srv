@@ -3,6 +3,7 @@
  * @var $measureTypes
  */
 
+use common\components\MainFunctions;
 use common\models\Channel;
 use kartik\select2\Select2;
 use yii\bootstrap\ActiveForm;
@@ -24,8 +25,17 @@ use yii\helpers\Html;
 </div>
 <div class="modal-body">
     <?php
-    echo $form->field($equipment, 'title')->textInput(['maxlength' => true]);
-    echo $form->field($equipment, 'measureTypeUuid')->widget(Select2::class,
+    if (isset ($channel) && $channel['uuid']) {
+        echo $form->field($channel, 'uuid')
+            ->hiddenInput(['value' => $channel['uuid']])
+            ->label(false);
+    } else {
+        echo $form->field($channel, 'uuid')
+            ->hiddenInput(['value' => MainFunctions::GUID()])
+            ->label(false);
+    }
+    echo $form->field($channel, 'title')->textInput(['maxlength' => true]);
+    echo $form->field($channel, 'measureTypeUuid')->widget(Select2::class,
             [
                 'data' => $measureTypes,
                 'language' => Yii::t('app', 'ru'),

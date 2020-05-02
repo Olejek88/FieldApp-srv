@@ -4,12 +4,12 @@ namespace backend\controllers;
 
 use backend\models\ChannelSearch;
 use common\models\Channel;
-use common\models\Users;
+use common\models\MeasureType;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\web\UploadedFile;
 
 /**
  * InstructionController implements the CRUD actions for Channel model.
@@ -35,6 +35,9 @@ class ChannelController extends Controller
                 ->one();
             if ($_POST['editableAttribute'] == 'title') {
                 $model['title'] = $_POST['Channel'][$_POST['editableIndex']]['title'];
+            }
+            if ($_POST['editableAttribute'] == 'measureTypeUuid') {
+                $model['measureTypeUuid'] = $_POST['Channel'][$_POST['editableIndex']]['measureTypeUuid'];
             }
             $model->save();
             return json_encode('');
@@ -88,8 +91,11 @@ class ChannelController extends Controller
     public function actionNew()
     {
         $channel = new Channel();
-        return $this->renderAjax('../instruction/_add_form', [
-            'channel' => $channel
+        $measureTypes = MeasureType::find()->orderBy('title')->all();
+        $items = ArrayHelper::map($measureTypes, 'uuid', 'title');
+        return $this->renderAjax('../channel/_add_form', [
+            'channel' => $channel,
+            'measureTypes' => $items
         ]);
     }
 
