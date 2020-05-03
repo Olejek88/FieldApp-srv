@@ -7,7 +7,6 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "token".
  *
- * @property string $tagId
  * @property string $accessToken
  * @property string $tokenType
  * @property integer $expiresIn
@@ -41,7 +40,6 @@ class Token extends ActiveRecord
         return [
             [
                 [
-                    'tagId',
                     'accessToken',
                     'tokenType',
                     'expiresIn',
@@ -54,7 +52,6 @@ class Token extends ActiveRecord
             [['expiresIn'], 'integer'],
             [
                 [
-                    'tagId',
                     'accessToken',
                     'tokenType',
                     'userName',
@@ -64,16 +61,6 @@ class Token extends ActiveRecord
                 'string', 'max' => 128
             ],
             [['accessToken'], 'unique'],
-            [
-                [
-                    'tagId',
-                    'accessToken',
-                    'tokenType',
-                    'userName',
-                    'issued',
-                    'expires',
-                ],
-            ],
         ];
     }
 
@@ -87,7 +74,6 @@ class Token extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'tagId' => Yii::t('app', 'Tag ID'),
             'accessToken' => Yii::t('app', 'Токен доступа'),
             'tokenType' => Yii::t('app', 'Тип токена'),
             'expiresIn' => Yii::t('app', 'Истекает(unix)'),

@@ -23,7 +23,7 @@ class m170112_051612_new_migrations_1 extends Migration
         }
         $currentTime = date('Y-m-d\TH:i:s');
 
-/*        $this->createTable('measure_type', [
+        $this->createTable('measure_type', [
             '_id' => $this->primaryKey(),
             'uuid' => $this->string()->notNull()->unique(),
             'title' => $this->string()->notNull()->defaultValue(""),
@@ -86,12 +86,12 @@ class m170112_051612_new_migrations_1 extends Migration
         if (!in_array('token', $tables)) {
             if ($dbType == "mysql") {
                 $this->createTable('{{%token}}', [
-                    'tagId' => 'VARCHAR(128) NOT NULL',
-                    0 => 'PRIMARY KEY (`tagId`)',
+                    'tagId' => 'VARCHAR(128)',
                     'accessToken' => 'VARCHAR(128) NOT NULL',
                     'tokenType' => 'VARCHAR(128) NOT NULL',
                     'expiresIn' => 'INT(10) UNSIGNED NOT NULL',
                     'userName' => 'VARCHAR(128) NOT NULL',
+                    0 => 'PRIMARY KEY (`userName`)',
                     'issued' => 'VARCHAR(128) NOT NULL',
                     'expires' => 'VARCHAR(128) NOT NULL',
                 ], $tableOptions);
@@ -116,8 +116,6 @@ class m170112_051612_new_migrations_1 extends Migration
 
         $this->addColumn('{{%user}}', 'verification_token', $this->string()->defaultValue(null));
         $this->alterColumn('{{%users}}', 'userId', $this->integer()->notNull()->unique());
-
-*/
 
         $this->insert('{{%user}}', [
             'id' => '1',

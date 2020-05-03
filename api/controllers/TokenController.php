@@ -5,6 +5,7 @@ namespace api\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotAcceptableHttpException;
+use yii\web\Request;
 use yii\web\UnauthorizedHttpException;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -28,6 +29,7 @@ class TokenController extends Controller
      * @throws NotAcceptableHttpException
      * @throws HttpException
      * @throws UnauthorizedHttpException
+     * @throws \Exception
      */
     public function actionIndex()
     {
@@ -49,7 +51,7 @@ class TokenController extends Controller
             throw new UnauthorizedHttpException();
         }
 
-        $token = Token::findOne(['tagId' => $user->tagId]);
+        $token = Token::findOne(['userName' => $user->login]);
         if ($token != null) {
             $start = time();
             $end = $start + 86400;
@@ -63,16 +65,13 @@ class TokenController extends Controller
         } else {
             // создаём токен
             $token = self::createToken(
-                $user->login, $user->tagId, $tokenType
+                $user->login, $tokenType
             );
 
             if ($token == null) {
                 throw new HttpException(500, Yii::t('app', 'Ошибка получения токена!'));
             }
         }
-
-        $this->setConnection($user->tagId);
-
         return $token;
     }
 
@@ -80,17 +79,16 @@ class TokenController extends Controller
      * Создаёт новый токен.
      *
      * @param string $login Login пользователя.
-     * @param string $tagId Id метки.
      * @param string $tokenType Тип токена (label | password)
      *
      * @return Token | null
      * @throws \Exception
      */
-    public static function createToken($login, $tagId, $tokenType)
+    public static function createToken($login, $tokenType)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if ($login == null || $tagId == null || $tokenType == null) {
+        if ($login == null || $tokenType == null) {
             return null;
         }
 
@@ -98,7 +96,6 @@ class TokenController extends Controller
         $end = $start + 86400;
 
         $token = new Token();
-        $token->tagId = $tagId;
         $token->accessToken = Token::initToken();
         $token->tokenType = $tokenType;
         $token->expiresIn = $end;
@@ -122,7 +119,7 @@ class TokenController extends Controller
      */
     public static function getTokenByTagId($tagId)
     {
-        $tokens = Token::find()->where(['tagId' => $tagId])->all();
+        $tokens = Token::find()->where(['login' => $tagId])->all();
         if (count($tokens) > 1) {
             // TODO: Реализовать уведомление администратора о том что
             // в системе два токена с одной меткой!
@@ -152,7 +149,7 @@ class TokenController extends Controller
         $condition = null;
         switch ($tokenType) {
             case 'label':
-                $condition = ['tagId' => $password];
+                $condition = ['login' => $password];
                 break;
             case 'password':
                 $condition = ['pass' => $password];
@@ -162,7 +159,6 @@ class TokenController extends Controller
         }
 
         // пользователь обязательно должен быть 'активным'
-        $condition['active'] = 1;
         $users = Users::find()->where($condition)->all();
         if (count($users) > 1) {
             // TODO: Здесь у нас косяк в случае проверки по паролю,
@@ -199,7 +195,7 @@ class TokenController extends Controller
     /**
      * Возвращает токен из переданного запроса.
      *
-     * @param \yii\web\Request $request Запрос.
+     * @param Request $request Запрос.
      *
      * @return string Токен.
      */
@@ -239,30 +235,11 @@ class TokenController extends Controller
             // throw new HttpException(500, 'Tokens with same tagId more than 1!');
             return null;
         } else if (count($tokens) == 1) {
-            $user = Users::find()->where(['tagId' => $tokens[0]->tagId])->all();
+            $user = Users::find()->where(['login' => $tokens[0]->login])->all();
             return $user[0];
         } else {
             return null;
         }
     }
 
-    /**
-     * Устанавливаем текущую дату очердного запроса от пользователя.
-     *
-     * @param string $tagId Ид метки.
-     *
-     * @return void
-     */
-    public function setConnection($tagId)
-    {
-        $user = Users::findOne(['tagId' => $tagId]);
-
-        if ($user != null) {
-            $connect = date('Y-m-d h:i:s');
-            $user->connectionDate = $connect;
-            // это ошибочное решение,
-            // подобная информация должна хранится в отдельной таблице
-            //$user->update();
-        }
-    }
 }

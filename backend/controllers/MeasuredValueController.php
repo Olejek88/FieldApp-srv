@@ -10,12 +10,13 @@ use common\models\EquipmentType;
 use common\models\MeasuredValue;
 use Yii;
 use yii\db\StaleObjectException;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * MeasuredValueController implements the CRUD actions for MeasuredValue model.
  */
-class MeasuredValueController extends ToirusController
+class MeasuredValueController extends Controller
 {
     protected $modelClass = MeasuredValue::class;
 
