@@ -44,6 +44,7 @@ class m170112_051612_new_migrations_1 extends Migration
             '_id' => $this->primaryKey(),
             'uuid' => $this->string()->notNull()->unique(),
             'date' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'value' => $this->string()->notNull()->defaultValue("0"),
             'channelUuid' => $this->string()->notNull(),
             'createdAt' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'changedAt' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),

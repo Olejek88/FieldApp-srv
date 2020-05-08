@@ -42,39 +42,24 @@ $this->title = Yii::t('app', 'Измеренные значения');
                             }
                         ],
                         [
-                            'attribute'=>'equipmentUuid',
+                            'attribute' => 'channelUuid',
                             'contentOptions' =>[
                                 'class' => 'table_class',
-                                'style'=>'padding: 18px 10px 15px 10px;'
                             ],
                             'headerOptions' => ['class' => 'text-center'],
-                            'value'     => 'equipment.title',
-                        ],
-                        [
-                            'attribute'=>'operationUuid',
-                            'contentOptions' =>[
-                                'class' => 'table_class',
-                                'style'=>'width: 50px; padding: 18px 10px 15px 10px;'
-                            ],
-                            'headerOptions' => ['class' => 'text-center'],
-                            'value'     => 'operation.operationTemplate.title'
+                            'value' => 'channel.title',
                         ],
                         [
                             'attribute'=>'value',
                             'contentOptions' =>[
                                 'class' => 'table_class',
-                                'style'=>'width: 50px; padding: 18px 10px 15px 10px;'
                             ],
-                            'headerOptions' => ['class' => 'text-center'],
-                            'content'=>function($data){
-                                return $data->value;
-                            }
+                            'headerOptions' => ['class' => 'text-center']
                         ],
                         [
                             'attribute'=>'date',
                             'contentOptions' =>[
                                 'class' => 'table_class',
-                                'style'=>'width: 50px; padding: 18px 10px 15px 10px;'
                             ],
                             'headerOptions' => ['class' => 'text-center'],
                             'content'=>function($data){
@@ -87,9 +72,8 @@ $this->title = Yii::t('app', 'Измеренные значения');
                             'headerOptions' => ['class' => 'text-center', 'width' => '70'],
                             'contentOptions' => [
                                 'class' => 'text-center',
-                                'style' => 'padding: 18px 10px 15px 10px;'
                             ],
-                            'template' => '{view} {update} {delete}{link}',
+                            'template' => '{delete}',
                         ],
                     ],
                 ]); ?>

@@ -52,7 +52,7 @@ class MeasuredValue extends ActiveRecord
                 ],
                 'required'
             ],
-            [['date', 'createdAt', 'changedAt'], 'safe'],
+            [['date', 'value', 'createdAt', 'changedAt'], 'safe'],
             [
                 [
                     'uuid',
@@ -93,7 +93,7 @@ class MeasuredValue extends ActiveRecord
      */
     public function fields()
     {
-        return ['_id', 'uuid',
+        return ['_id', 'uuid', 'channelUuid',
             'channel' => function ($model) {
                 return $model->channel;
             }, 'date', 'value', 'createdAt', 'changedAt'

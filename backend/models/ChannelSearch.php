@@ -7,7 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * InstructionSearch represents the model behind the search form about `common\models\Channel`.
+ * ChannelSearch represents the model behind the search form about `common\models\Channel`.
  */
 class ChannelSearch extends Channel
 {

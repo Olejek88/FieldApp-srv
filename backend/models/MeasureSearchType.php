@@ -18,7 +18,7 @@ class MeasureSearchType extends MeasureType
     {
         return [
             [['_id'], 'integer'],
-            [['uuid', 'title', 'icon', 'createdAt', 'changedAt'], 'safe'],
+            [['uuid', 'title', 'createdAt', 'changedAt'], 'safe'],
         ];
     }
 

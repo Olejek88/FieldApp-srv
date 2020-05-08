@@ -3,11 +3,9 @@
 namespace backend\controllers;
 
 use backend\models\MeasuredSearchValue;
-use common\models\Defect;
 use common\models\Channel;
-use common\models\EquipmentModel;
-use common\models\EquipmentType;
 use common\models\MeasuredValue;
+use common\models\MeasureType;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
@@ -74,7 +72,7 @@ class MeasuredValueController extends Controller
             $model->_id = $measure_id;
             $model->changedAt = date("Y-m-d H:i:s");
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->_id]);
+                return $this->redirect(['index']);
             }
         }
         return $this->render('create', [
@@ -90,17 +88,17 @@ class MeasuredValueController extends Controller
     public function actionTrend()
     {
         $request = Yii::$app->request;
-        $equipmentUuid = $request->getQueryParam('equipment');
+        $measureUuid = $request->getQueryParam('measure');
         $measureTypeUuid = $request->getQueryParam('measure');
         $measuredValues = array(0);
         $name = '';
-        if (!empty($measureTypeUuid) && !empty($equipmentUuid)) {
+        if (!empty($measureTypeUuid) && !empty($measureUuid)) {
             $measuredValues = MeasuredValue::find()
                 ->where(['measureTypeUuid' => $measureTypeUuid])
-                ->where(['equipmentUuid' => $equipmentUuid])
+                ->where(['measureUuid' => $measureUuid])
                 ->orderBy('date')
                 ->all();
-            if ($measuredValues[0]!=null)
+            if ($measuredValues[0] != null)
                 $name = $measuredValues[0]["measureType"]->title;
         }
         return $this->render('trend', [
@@ -163,62 +161,38 @@ class MeasuredValueController extends Controller
     }
 
     /**
-     * Build equipment tree and measured values of each equipment.
+     * Build measure tree and measured values of each measure.
      * If the model is not found, a 404 HTTP exception will be thrown.
      */
     public function actionTree()
     {
-        $fullTree= array();
-        $equipmentTypes = EquipmentType::find()
-            ->select('*')
-            ->all();
-        $equipmentTypeCount = 0;
-        foreach ($equipmentTypes as $equipmentType) {
-            $fullTree[$equipmentTypeCount]["title"] = $equipmentType['title'];
-
-            $equipmentModels = EquipmentModel::find()
-                ->select('*')
-                ->where(['equipmentTypeUuid' => $equipmentType['uuid']])
+        $fullTree = array();
+        $measureTypes = MeasureType::find()->all();
+        $measureTypeCount = 0;
+        foreach ($measureTypes as $measureType) {
+            $fullTree[$measureTypeCount]["title"] = $measureType['title'];
+            $channels = Channel::find()
+                ->where(['measureTypeUuid' => $measureType['uuid']])
                 ->all();
-            $equipmentModelCount = 0;
-
-            foreach ($equipmentModels as $equipmentModel) {
-                $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["title"] = $equipmentModel['title'];
-                $equipments = Channel::find()
-                    ->select('*')
-                    ->where(['equipmentModelUuid' => $equipmentModel['uuid']])
-                    ->all();
-
-                $equipmentCount = 0;
-                foreach ($equipments as $equipment) {
-                    $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["title"] = $equipment['title'];
-                    $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["location"] = $equipment['location']->title;
-                    $measuredValues = MeasuredValue::find()
-                        ->select('*')
-                        ->where(['equipmentUuid' => $equipment['uuid']])
-                        ->groupBy('measureTypeUuid')
-                        ->orderBy('createdAt')
-                        ->all();
-                    $measureCount = 0;
-                    foreach ($measuredValues as $measuredValue) {
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["title"] =
-                            '<a href="/measured-value/trend.php?equipment='.$measuredValue["equipment"]->uuid.'&measure='.$measuredValue["measureType"]->uuid.'">'.$measuredValue['measureType']->title.'</a>';
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["location"] = "---//--//---";
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["parameter"] = $measuredValue['measureType']->title;
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["value"] = $measuredValue['value'];
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["date"] = $measuredValue['date'];
-                        $fullTree[$equipmentTypeCount]["children"][$equipmentModelCount]["children"][$equipmentCount]["children"][$measureCount]["operation"] = $measuredValue['operation']->operationTemplate->title;
-                        $measureCount++;
-                    }
-                    if ($measureCount>0)
-                        $equipmentCount++;
+            $channelsCount = 0;
+            foreach ($channels as $channel) {
+                $fullTree[$measureTypeCount]["children"][$channelsCount]["title"] = $channel['title'];
+                $measuredValue = MeasuredValue::find()
+                    ->where(['channelUuid' => $channel['uuid']])
+                    ->orderBy('createdAt')
+                    ->one();
+                if ($measuredValue) {
+                    $fullTree[$measureTypeCount]["children"][$channelsCount]["title"] =
+                        '<a href="/measured-value/trend.php?measure=' . $measuredValue["measure"]->uuid . '&measure=' . $measuredValue["measureType"]->uuid . '">' . $measuredValue['measureType']->title . '</a>';
+                    $fullTree[$measureTypeCount]["children"][$channelsCount]["children"]["value"] = $measuredValue['value'];
+                    $fullTree[$measureTypeCount]["children"][$channelsCount]["children"]["date"] = $measuredValue['date'];
                 }
-                $equipmentModelCount++;
+                $channelsCount++;
             }
-            $equipmentTypeCount++;
+            $measureTypeCount++;
         }
         return $this->render('tree', [
-            'equipment' => $fullTree
+            'measure' => $fullTree
         ]);
     }
 

@@ -1,9 +1,7 @@
 <?php
 
-use app\commands\MainFunctions;
+use common\components\MainFunctions;
 use common\models\Channel;
-use common\models\MeasureType;
-use common\models\Operation;
 use dosamigos\datetimepicker\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -37,15 +35,7 @@ use yii\widgets\ActiveForm;
     <?php
     $equipment = Channel::find()->all();
     $items = ArrayHelper::map($equipment, 'uuid', 'title');
-    echo $form->field($model, 'equipmentUuid')->dropDownList($items);
-
-    $operation = Operation::find()->all();
-    $items = ArrayHelper::map($operation, 'uuid', 'operationTemplate.title');
-    echo $form->field($model, 'operationUuid')->dropDownList($items);
-
-    $measureType = MeasureType::find()->all();
-    $items = ArrayHelper::map($measureType, 'uuid', 'title');
-    echo $form->field($model, 'measureTypeUuid')->dropDownList($items);
+    echo $form->field($model, 'channelUuid')->dropDownList($items);
     ?>
 
     <div class="pole-mg" style="margin: 0 -15px 20px -15px;">

@@ -60,6 +60,7 @@ class MeasuredSearchValue extends MeasuredValue
         $query->andFilterWhere([
             '_id' => $this->_id,
             'date' => $this->date,
+            'value' => $this->value,
             'createdAt' => $this->createdAt,
             'changedAt' => $this->changedAt,
         ]);

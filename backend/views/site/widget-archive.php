@@ -41,7 +41,7 @@ use kartik\grid\GridView;
                 'value' => function ($model) {
                     $color = 'background-color: gray';
                     $status = "<span class='badge' style='" . $color . "; height: 12px; margin-top: -3px'> </span>&nbsp;" .
-                        $model->measureType->title;
+                        $model->channel->measureType->title;
                     return $status;
                 },
                 'contentOptions' => [

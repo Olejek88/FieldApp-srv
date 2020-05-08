@@ -64,7 +64,7 @@ class ChannelController extends ActiveController
 
         // проверяем параметры запроса
         $req = Yii::$app->request;
-        $query = Channel::find()->where(['deleted' => 0]);
+        $query = Channel::find();
 
         $id = $req->getQueryParam('id');
         if ($id != null) {

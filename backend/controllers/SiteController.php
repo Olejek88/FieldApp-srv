@@ -78,11 +78,11 @@ class SiteController extends Controller
         $measureChart['dates'] = '';
         $title = '';
         /** @var MeasuredValue $lastMeasure */
-        $lastMeasure = MeasuredValue::find()->orderBy('date desc')->one();
+        $lastMeasure = MeasuredValue::find()->orderBy('date desc')->limit(1)->one();
         if ($lastMeasure) {
             $count = 0;
             $title = $lastMeasure->channel->title;
-            $measures = MeasuredValue::find()->orderBy('date desc')->limit(50);
+            $measures = MeasuredValue::find()->orderBy('date desc')->limit(50)->all();
             foreach ($measures as $measure) {
                 if ($count > 0) {
                     $measureChart['values'] .= ',';
