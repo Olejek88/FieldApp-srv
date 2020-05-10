@@ -46,6 +46,7 @@ class MeasuredSearchValue extends MeasuredValue
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['_id' => SORT_DESC]],
         ]);
 
         $this->load($params);

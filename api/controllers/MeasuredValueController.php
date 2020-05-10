@@ -95,11 +95,7 @@ class MeasuredValueController extends Controller
 
                 $model->attributes = $item;
                 $model->setAttribute('_id', $item['_id']);
-                $model->setAttribute('equipmentUuid', $item['equipment']['uuid']);
-                $model->setAttribute('operationUuid', $item['operation']['uuid']);
-                $model->setAttribute(
-                    'measureTypeUuid', $item['measureType']['uuid']
-                );
+                $model->setAttribute('channelUuid', $item['channel']['uuid']);
                 $model->setAttribute(
                     'date',
                     MyHelpers::parseFormatDate($item['date'])

@@ -82,7 +82,11 @@ class SiteController extends Controller
         if ($lastMeasure) {
             $count = 0;
             $title = $lastMeasure->channel->title;
-            $measures = MeasuredValue::find()->orderBy('date desc')->limit(50)->all();
+            $measures = MeasuredValue::find()
+                ->where(['channelUuid' => $lastMeasure->channelUuid])
+                ->orderBy('date desc')
+                ->limit(30)
+                ->all();
             foreach ($measures as $measure) {
                 if ($count > 0) {
                     $measureChart['values'] .= ',';
